@@ -363,7 +363,7 @@ function Field({
 
 function Result({ type, answers }: { type: ResultType; answers: Answers }) {
   const name = answers.name?.split(" ")[0] ?? "";
-  const waNumber = "5586999999999";
+  const waNumber = "558692222-1001".replace(/\D/g, "");
 
   const configs = {
     hot: {
