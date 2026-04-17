@@ -42,6 +42,19 @@ async function sendLead(answers: Answers) {
   }
 }
 
+function maskPhone(value: string): string {
+  const d = value.replace(/\D/g, "").slice(0, 11);
+  if (d.length === 0) return "";
+  if (d.length <= 2) return `(${d}`;
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+function maskEmail(value: string): string {
+  return value.replace(/[^a-zA-Z0-9@._%+\-]/g, "");
+}
+
 type Answers = {
   occasion?: string;
   size?: string;
@@ -221,7 +234,7 @@ export function Quiz({ open, onClose }: { open: boolean; onClose: () => void }) 
                 <Field
                   label="WhatsApp"
                   value={answers.whatsapp ?? ""}
-                  onChange={(v) => setAnswers({ ...answers, whatsapp: v })}
+                  onChange={(v) => setAnswers({ ...answers, whatsapp: maskPhone(v) })}
                   error={errors.whatsapp}
                   placeholder="(86) 9 9999-9999"
                   inputMode="tel"
@@ -229,10 +242,10 @@ export function Quiz({ open, onClose }: { open: boolean; onClose: () => void }) 
                 <Field
                   label="E-mail (opcional)"
                   value={answers.email ?? ""}
-                  onChange={(v) => setAnswers({ ...answers, email: v })}
+                  onChange={(v) => setAnswers({ ...answers, email: maskEmail(v) })}
                   error={errors.email}
                   placeholder="seu@email.com"
-                  type="email"
+                  inputMode="email"
                 />
               </div>
 
